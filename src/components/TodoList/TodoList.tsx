@@ -16,11 +16,10 @@ const contentStyle: React.CSSProperties = {
   backgroundColor: "#0000",
 };
 
-export default function ContentLay() {
+export default function TodoList() {
   const [task, setTask] = useState("");
   const [tasks, setTasks] = useState<Task[]>([]);
   const [edit, setEdit] = useState<Task | null>(null);
-  // const [check, setCheck] = useState<number | null>(null);
 
   const apiUrl = process.env.REACT_APP_API_URL;
 
