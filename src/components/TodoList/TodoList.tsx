@@ -1,7 +1,7 @@
 import { DeleteTwoTone, EditTwoTone } from "@ant-design/icons";
 import { Button, Checkbox, Form, Input, Layout, List, message } from "antd";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Task } from "../../types";
 import { contentStyle } from "../../Styles";
 
@@ -15,6 +15,11 @@ export default function TodoList() {
   useEffect(() => {
     handleGetTask();
   }, []);
+
+  const resetStates = () => {
+    setEditTemporaryTask(null);
+    setValueOfInput("");
+  };
 
   async function handleGetTask() {
     try {
@@ -47,8 +52,7 @@ export default function TodoList() {
     try {
       await axios.delete<Task>(`${apiUrl}/${id}`);
       handleGetTask();
-      setValueOfInput("");
-      setEditTemporaryTask(null);
+      resetStates();
     } catch (error) {
       message.error("Error deleting");
     }
@@ -68,26 +72,29 @@ export default function TodoList() {
     }
   }
 
-  async function handleEditSubmit() {
+  const handleEdit = async () => {
+    try {
+      await axios.put(`${apiUrl}/${editTemporaryTask?.id}`, {
+        title: valueOfInput,
+        completed: editTemporaryTask?.completed,
+      });
+      handleGetTask();
+      resetStates();
+      message.success("Task successfully updated");
+    } catch (error) {
+      message.error("Error updating task");
+    }
+  };
+
+  async function handlSubmit() {
     if (editTemporaryTask !== null) {
-      try {
-        await axios.put(`${apiUrl}/${editTemporaryTask.id}`, {
-          title: valueOfInput,
-          completed: editTemporaryTask.completed,
-        });
-        setEditTemporaryTask(null);
-        setValueOfInput("");
-        handleGetTask();
-        message.success("Task successfully updated");
-      } catch (error) {
-        message.error("Error updating task");
-      }
+      handleEdit();
     } else {
       handleAddTask();
     }
   }
 
-  function handleEdit(item: Task) {
+  function handleEditTemporaryTask(item: Task) {
     if (editTemporaryTask === null) {
       setEditTemporaryTask(item);
       setValueOfInput(item.title);
@@ -104,12 +111,7 @@ export default function TodoList() {
           placeholder="Write the task!!!"
         />
 
-        <Button
-          type="primary"
-          onClick={
-            editTemporaryTask !== null ? handleEditSubmit : handleAddTask
-          }
-        >
+        <Button type="primary" onClick={handlSubmit}>
           {editTemporaryTask !== null ? "Save" : "Submit"}
         </Button>
 
@@ -138,7 +140,7 @@ export default function TodoList() {
                 <Button
                   type="link"
                   danger
-                  onClick={() => handleEdit(item)}
+                  onClick={() => handleEditTemporaryTask(item)}
                   disabled={item.completed}
                 >
                   <EditTwoTone />
