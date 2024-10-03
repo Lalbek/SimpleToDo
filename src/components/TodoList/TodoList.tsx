@@ -2,22 +2,11 @@ import { DeleteTwoTone, EditTwoTone } from "@ant-design/icons";
 import { Button, Checkbox, Form, Input, Layout, List, message } from "antd";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-
-interface Task {
-  id: number;
-  title: string;
-  completed: boolean;
-}
-
-const contentStyle: React.CSSProperties = {
-  textAlign: "center",
-  minHeight: "calc(100vh)",
-  color: "#fff",
-  backgroundColor: "#0000",
-};
+import { Task } from "../../types";
+import { contentStyle } from "../../Styles";
 
 export default function TodoList() {
-  const [task, setTask] = useState("");
+  const [valueOfInput, setValueOfInput] = useState("");
   const [tasks, setTasks] = useState<Task[]>([]);
   const [edit, setEdit] = useState<Task | null>(null);
 
@@ -37,17 +26,17 @@ export default function TodoList() {
   }
 
   async function handleAddTask() {
-    if (task.trim() === "") {
+    if (valueOfInput.trim() === "") {
       message.error("Please add a task");
       return;
     }
     try {
       const res = await axios.post<Task>(`${apiUrl}`, {
-        title: task,
+        title: valueOfInput,
         completed: false,
       });
       setTasks([...tasks, res.data]);
-      setTask("");
+      setValueOfInput("");
       message.success("Task successfully added");
     } catch (error) {
       message.error("Error adding task");
@@ -58,6 +47,8 @@ export default function TodoList() {
     try {
       await axios.delete<Task>(`${apiUrl}/${id}`);
       handleGetTask();
+      setValueOfInput("");
+      setEdit(null);
     } catch (error) {
       message.error("Error deleting");
     }
@@ -81,11 +72,11 @@ export default function TodoList() {
     if (edit !== null) {
       try {
         await axios.put(`${apiUrl}/${edit.id}`, {
-          title: task,
+          title: valueOfInput,
           completed: edit.completed,
         });
         setEdit(null);
-        setTask("");
+        setValueOfInput("");
         handleGetTask();
         message.success("Task successfully updated");
       } catch (error) {
@@ -99,7 +90,7 @@ export default function TodoList() {
   function handleEdit(item: Task) {
     if (edit === null) {
       setEdit(item);
-      setTask(item.title);
+      setValueOfInput(item.title);
     }
   }
 
@@ -107,8 +98,8 @@ export default function TodoList() {
     <Layout.Content style={contentStyle}>
       <Form>
         <Input
-          value={task}
-          onChange={(e) => setTask(e.target.value)}
+          value={valueOfInput}
+          onChange={(e) => setValueOfInput(e.target.value)}
           style={{ width: 400, margin: 10, marginTop: 20 }}
           placeholder="Write the task!!!"
         />

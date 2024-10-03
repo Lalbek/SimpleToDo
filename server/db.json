@@ -1,24 +1,3 @@
 {
-  "todos": [
-    {
-      "completed": false,
-      "title": "adsdas",
-      "id": "91b5"
-    },
-    {
-      "id": "e7b9",
-      "title": "czx",
-      "completed": false
-    },
-    {
-      "id": "fc5b",
-      "title": "zcxcxz",
-      "completed": false
-    },
-    {
-      "completed": false,
-      "title": "xczcxzxcz",
-      "id": "cd12"
-    }
-  ]
+  "todos": []
 }
