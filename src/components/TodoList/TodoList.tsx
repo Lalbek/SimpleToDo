@@ -8,7 +8,7 @@ import { contentStyle } from "../../Styles";
 export default function TodoList() {
   const [valueOfInput, setValueOfInput] = useState("");
   const [tasks, setTasks] = useState<Task[]>([]);
-  const [edit, setEdit] = useState<Task | null>(null);
+  const [editTemporaryTask, setEditTemporaryTask] = useState<Task | null>(null);
 
   const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -48,7 +48,7 @@ export default function TodoList() {
       await axios.delete<Task>(`${apiUrl}/${id}`);
       handleGetTask();
       setValueOfInput("");
-      setEdit(null);
+      setEditTemporaryTask(null);
     } catch (error) {
       message.error("Error deleting");
     }
@@ -56,7 +56,7 @@ export default function TodoList() {
 
   async function handleToggle(item: Task) {
     try {
-      setEdit(null);
+      setEditTemporaryTask(null);
       await axios.put(`${apiUrl}/${item.id}`, {
         completed: !item.completed,
         title: item.title,
@@ -69,13 +69,13 @@ export default function TodoList() {
   }
 
   async function handleEditSubmit() {
-    if (edit !== null) {
+    if (editTemporaryTask !== null) {
       try {
-        await axios.put(`${apiUrl}/${edit.id}`, {
+        await axios.put(`${apiUrl}/${editTemporaryTask.id}`, {
           title: valueOfInput,
-          completed: edit.completed,
+          completed: editTemporaryTask.completed,
         });
-        setEdit(null);
+        setEditTemporaryTask(null);
         setValueOfInput("");
         handleGetTask();
         message.success("Task successfully updated");
@@ -88,8 +88,8 @@ export default function TodoList() {
   }
 
   function handleEdit(item: Task) {
-    if (edit === null) {
-      setEdit(item);
+    if (editTemporaryTask === null) {
+      setEditTemporaryTask(item);
       setValueOfInput(item.title);
     }
   }
@@ -106,9 +106,11 @@ export default function TodoList() {
 
         <Button
           type="primary"
-          onClick={edit !== null ? handleEditSubmit : handleAddTask}
+          onClick={
+            editTemporaryTask !== null ? handleEditSubmit : handleAddTask
+          }
         >
-          {edit !== null ? "Save" : "Submit"}
+          {editTemporaryTask !== null ? "Save" : "Submit"}
         </Button>
 
         <List
