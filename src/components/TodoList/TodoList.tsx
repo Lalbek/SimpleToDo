@@ -1,9 +1,9 @@
-import { DeleteTwoTone, EditTwoTone } from "@ant-design/icons";
-import { Button, Checkbox, Form, Input, Layout, List, message } from "antd";
+import { Button, Form, Input, Layout, List, message } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Task } from "../../types";
 import { contentStyle } from "../../Styles";
+import { ListItem } from "../ListItem/ListItem";
 
 export default function TodoList() {
   const [valueOfInput, setValueOfInput] = useState("");
@@ -121,40 +121,12 @@ export default function TodoList() {
           bordered
           dataSource={tasks}
           renderItem={(item) => (
-            <List.Item
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                textDecoration: item.completed ? "line-through" : "none",
-              }}
-            >
-              <Checkbox
-                onClick={() => handleToggle(item)}
-                checked={item.completed}
-              />
-
-              {item.title}
-
-              <div>
-                <Button
-                  type="link"
-                  danger
-                  onClick={() => handleEditTemporaryTask(item)}
-                  disabled={item.completed}
-                >
-                  <EditTwoTone />
-                </Button>
-
-                <Button
-                  type="link"
-                  danger
-                  onClick={() => handleDeleteTask(item.id)}
-                >
-                  <DeleteTwoTone />
-                </Button>
-              </div>
-            </List.Item>
+            <ListItem
+              item={item}
+              handleDeleteTask={handleDeleteTask}
+              handleToggle={handleToggle}
+              handleEditTemporaryTask={handleEditTemporaryTask}
+            />
           )}
         />
       </Form>
