@@ -3,3 +3,10 @@ export interface Task {
   title: string;
   completed: boolean;
 }
+
+export interface PropsListItem {
+  item: Task;
+  handleToggle: (item: Task) => void;
+  handleEditTemporaryTask: (item: Task) => void;
+  handleDeleteTask: (id: number) => void;
+}

@@ -1,20 +1,13 @@
 import { Button, Checkbox, List } from "antd";
-import { Task } from "../../types";
+import { PropsListItem } from "../../types";
 import { DeleteTwoTone, EditTwoTone } from "@ant-design/icons";
-
-interface IPropsListItem {
-  item: Task;
-  handleToggle: (item: Task) => void;
-  handleEditTemporaryTask: (item: Task) => void;
-  handleDeleteTask: (id: number) => void;
-}
 
 export function ListItem({
   item,
   handleToggle,
   handleEditTemporaryTask,
   handleDeleteTask,
-}: IPropsListItem) {
+}: PropsListItem) {
   return (
     <List.Item
       style={{
