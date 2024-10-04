@@ -19,6 +19,7 @@ export default function TodoList() {
   const resetStates = () => {
     setEditTemporaryTask(null);
     setValueOfInput("");
+    handleGetTask();
   };
 
   async function handleGetTask() {
@@ -40,8 +41,7 @@ export default function TodoList() {
         title: valueOfInput,
         completed: false,
       });
-      setTasks([...tasks, res.data]);
-      setValueOfInput("");
+      resetStates();
       message.success("Task successfully added");
     } catch (error) {
       message.error("Error adding task");
@@ -51,7 +51,6 @@ export default function TodoList() {
   async function handleDeleteTask(id: number) {
     try {
       await axios.delete<Task>(`${apiUrl}/${id}`);
-      handleGetTask();
       resetStates();
     } catch (error) {
       message.error("Error deleting");
@@ -78,7 +77,7 @@ export default function TodoList() {
         title: valueOfInput,
         completed: editTemporaryTask?.completed,
       });
-      handleGetTask();
+
       resetStates();
       message.success("Task successfully updated");
     } catch (error) {
@@ -107,7 +106,7 @@ export default function TodoList() {
         <Input
           value={valueOfInput}
           onChange={(e) => setValueOfInput(e.target.value)}
-          style={{ width: 400, margin: 10, marginTop: 20 }}
+          style={{ width: 300, marginBottom: 20 }}
           placeholder="Write the task!!!"
         />
 
@@ -117,7 +116,7 @@ export default function TodoList() {
 
         <List
           size="small"
-          style={{ marginTop: 30, width: 400, marginLeft: 500 }}
+          style={{ marginTop: 30, width: 400 }}
           bordered
           dataSource={tasks}
           renderItem={(item) => (

@@ -1,6 +1,11 @@
 export const contentStyle: React.CSSProperties = {
   textAlign: "center",
-  minHeight: "calc(100vh)",
+  height: "100vh",
   color: "#fff",
   backgroundColor: "#0000",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "flex-start",
+  alignItems: "center",
+  paddingTop: "50px",
 };
