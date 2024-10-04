@@ -25,8 +25,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "server": "json-server --watch server/db.json --port 3001"
-  },
+    "server": "json-server --watch server/db.json --port 3001",
+    "start:both": "concurrently \"npm run server\" \"npm run start\""
+    },
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -47,6 +48,7 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "concurrently": "^9.0.1",
     "json-server": "^1.0.0-beta.2"
   }
 }

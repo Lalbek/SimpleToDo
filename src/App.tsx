@@ -1,13 +1,13 @@
 import { Layout } from "antd";
 
-import ContentLay from "./components/Layout/ContentLay";
-import HeaderLay from "./components/Layout/HeaderLay";
+import HeaderLay from "./components/Header/HeaderLay";
+import TodoList from "./components/TodoList/TodoList";
 
 function App() {
   return (
     <Layout>
       <HeaderLay />
-      <ContentLay />
+      <TodoList />
     </Layout>
   );
 }
